@@ -13,11 +13,65 @@ Create a file example.go
 ```
 package main
 
-import httpclient "github.com/paulofilipem/iup-http-client-util"
+import (
+	"fmt"
 
-func main(){
+	httpclient "github.com/paulofilipem/iup-http-client-util"
+)
 
-	
+func main() {
+
+	fmt.Println("\nSending a Simple HTTP Request")
+	httpclient.Url = "http://google.com"
+	httpclient.Method = "GET"
+	httpclient.HeadersValue = &[]string{"Content-Type: text/html", "Accept: text/html"}
+	httpclient.Send()
+	if httpclient.ResponseCode == 200 {
+		fmt.Println("OK, StatusCode OK - 200")
+	} else {
+		fmt.Println("Error, StatusCode:" + string(httpclient.ResponseCode))
+	}
+
+	for _, value := range *httpclient.ResponseHeaders {
+		fmt.Println("Reponse Header: ", value)
+	}
+
+	fmt.Println("\nSending a Simple HTTPS Request")
+	httpclient.Url = "https://google.com"
+	httpclient.Method = "GET"
+	httpclient.HeadersValue = &[]string{"Content-Type: text/html", "Accept: text/html"}
+	httpclient.Send()
+	if httpclient.ResponseCode == 200 {
+		fmt.Println("OK, StatusCode OK - 200")
+	} else {
+		fmt.Println("Error, StatusCode:" + string(httpclient.ResponseCode))
+	}
+
+	fmt.Println("\nSending a Request using SSL Client Auth")
+	httpclient.Url = "https://google.com"
+	httpclient.Method = "GET"
+	httpclient.HeadersValue = &[]string{"Content-Type: text/html", "Accept: text/html"}
+	httpclient.Send()
+	if httpclient.ResponseCode == 200 {
+		fmt.Println("OK, StatusCode OK - 200")
+	} else {
+		fmt.Println("Error, StatusCode:" + string(httpclient.ResponseCode))
+	}
+
+	fmt.Println("\nSending a multiple request, using cookie storage(on memory)")
+	var baseUrl = "https://google.com"
+	httpclient.Url = baseUrl + "/authenticate"
+	httpclient.Method = "POST"
+	httpclient.HeadersValue = &[]string{"Content-Type: text/html", "Accept: text/html"}
+	httpclient.Send()
+	if httpclient.ResponseCode == 200 {
+		fmt.Println("OK, StatusCode OK - 200")
+	} else {
+		fmt.Println("Error, StatusCode:" + string(httpclient.ResponseCode))
+	}
+
+	httpclient.Test()
+
 }
 ```
 
@@ -37,4 +91,4 @@ Feel free :D
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](http://en.wikipedia.org/wiki/MIT_License) file for details
